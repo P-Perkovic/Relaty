@@ -9,6 +9,7 @@ namespace Relaty.Models
 {
     public class Employee
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -17,11 +18,10 @@ namespace Relaty.Models
 
         public string Mail { get; set; }
 
-        [ForeignKey("Title")]
         public int TitleId { get; set; }
 
         public Title Title { get; set; }
 
-        public List<Project> Projects { get; set; }
+        public ICollection<ProjectEmployee> ProjectsEmployees { get; set; }
     }
 }

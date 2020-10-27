@@ -9,6 +9,7 @@ namespace Relaty.Models
 {
     public class Project
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -17,11 +18,10 @@ namespace Relaty.Models
 
         public DateTime? DateOfStart { get; set; }
 
-        [ForeignKey("Status")]
         public int StatusId { get; set; }
 
         public Status Status { get; set; }
 
-        public List<Employee> Employees { get; set; }
+        public ICollection<ProjectEmployee> ProjectsEmployees { get; set; }
     }
 }
