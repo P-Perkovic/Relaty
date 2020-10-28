@@ -1,0 +1,26 @@
+﻿@model Relaty.ViewModels.ProjectStatusesModel
+@{
+    ViewData["Title"] = "New";
+}
+
+<br />
+
+<h2>New Project</h2>
+
+<br />
+
+<form method="post" asp-action="Create">
+    <div class="form-group col-3">
+        <label asp-for="Project.Name"></label>
+        <input type="text" class="form-control" asp-for="Project.Name" />
+    </div>
+    <div class="form-group col-3">
+        <label asp-for="Project.DateOfStart"></label>
+        <input type="email" class="form-control" placeholder="1.1.2001." asp-for="Project.DateOfStart" />
+    </div>
+    <div class="form-group col-3">
+        <label asp-for="Project.StatusId"></label>
+        <select class="form-control" id="exampleSelect1" asp-items="@(new SelectList(Model.Statuses,"Id","Name"))">
+        </select>
+    </div>
+</form>

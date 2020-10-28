@@ -16,8 +16,9 @@ namespace Relaty.Models
         [Required]
         public string Name { get; set; }
 
-        public string Mail { get; set; }
+        public string Email { get; set; }
 
+        [Display(Name = "Title")]
         public int TitleId { get; set; }
 
         public Title Title { get; set; }

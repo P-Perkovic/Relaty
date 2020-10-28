@@ -16,8 +16,10 @@ namespace Relaty.Models
         [Required]
         public string Name { get; set; }
 
+        [Display(Name = "Date Of Start")]
         public DateTime? DateOfStart { get; set; }
 
+        [Display(Name = "Status")]
         public int StatusId { get; set; }
 
         public Status Status { get; set; }
