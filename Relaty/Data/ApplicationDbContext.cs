@@ -16,7 +16,7 @@ namespace Relaty.Data
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public ProjectEmployee ProjectsEmployees { get; set; }
+        public DbSet<ProjectEmployee> ProjectsEmployees { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Title> Titles { get; set; }
 
