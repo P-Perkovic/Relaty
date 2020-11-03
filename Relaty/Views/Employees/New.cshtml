@@ -7,20 +7,30 @@
 
 <h2>New Employee</h2>
 
-<br /> 
+<br />
 
 <form method="post" asp-action="Create">
     <div class="form-group col-3">
         <label asp-for="Employee.Name"></label>
         <input type="text" class="form-control" asp-for="Employee.Name" />
+        <span asp-validation-for="Employee.Name" class="text-danger"></span>
     </div>
     <div class="form-group col-3">
         <label asp-for="Employee.Email"></label>
         <input type="email" class="form-control" placeholder="exsample@email.com" asp-for="Employee.Email" />
+        <span asp-validation-for="Employee.Email" class="text-danger"></span>
     </div>
     <div class="form-group col-3">
         <label asp-for="Employee.TitleId"></label>
-        <select class="form-control" id="exampleSelect1" asp-items="@(new SelectList(Model.Titles,"Id","Name"))">
+        <select class="form-control" id="exampleSelect1" asp-for="Employee.TitleId" asp-items="@(new SelectList(Model.Titles,"Id","Name"))">
+            <option value="0">Select title</option>
         </select>
+        <span asp-validation-for="Employee.TitleId" class="text-danger"></span>
+    </div>
+    <div class="form-group col-3">
+        <button class="btn btn-success">Submit</button>
     </div>
 </form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<partial name="_ValidationScriptsPartial" />
