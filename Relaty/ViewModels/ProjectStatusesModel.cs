@@ -10,5 +10,7 @@ namespace Relaty.ViewModels
     {
         public Project Project { get; set; }
         public IEnumerable<Status> Statuses { get; set; }
+
+        public IEnumerable<int> EmployeeIds { get; set; }
     }
 }

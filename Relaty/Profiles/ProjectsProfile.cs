@@ -16,6 +16,8 @@ namespace Relaty.Profiles
             CreateMap<Project, ProjectDto>();
             CreateMap<Project, ProjectWithEmployeesDto>();
             CreateMap<ProjectEmployee, ProjectEmployeesDto>();
+
+            CreateMap<ProjectDto, Project>();
         }
     }
 }
