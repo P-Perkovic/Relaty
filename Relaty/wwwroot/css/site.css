@@ -12,8 +12,13 @@ a {
   color: #0366d6;
 }
 
+.input-validation-error {
+    border-color: #e74c3c;
+}
+
 .badge {
     font-size: 100%;
+    margin: 1px;
 }
 
 .btn{
