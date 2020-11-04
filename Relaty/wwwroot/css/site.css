@@ -12,6 +12,10 @@ a {
   color: #0366d6;
 }
 
+.badge {
+    font-size: 100%;
+}
+
 .btn{
     margin: 1px;
 }

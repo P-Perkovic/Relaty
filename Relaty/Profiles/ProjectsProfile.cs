@@ -13,6 +13,7 @@ namespace Relaty.Profiles
         public ProjectsProfile()
         {
             //        Source --> Target
+            CreateMap<Project, Project>();
             CreateMap<Project, ProjectDto>();
             CreateMap<Project, ProjectWithEmployeesDto>();
             CreateMap<ProjectEmployee, ProjectEmployeesDto>();

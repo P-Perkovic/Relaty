@@ -1,15 +1,19 @@
 ﻿@model Relaty.ViewModels.EmployeeTitlesModel
 @{
-    ViewData["Title"] = "New";
+    ViewData["Title"] = "EmployeeForm";
 }
 
 <br />
 
-<h2>New Employee</h2>
+<h2>@Model.ViewName Employee</h2>
 
 <br />
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Update">
+    <div hidden class="form-group col-3">
+        <label asp-for="Employee.Id"></label>
+        <input type="text" class="form-control" asp-for="Employee.Id" />
+    </div>
     <div class="form-group col-3">
         <label asp-for="Employee.Name"></label>
         <input type="text" class="form-control" asp-for="Employee.Name" />
@@ -22,11 +26,25 @@
     </div>
     <div class="form-group col-3">
         <label asp-for="Employee.TitleId"></label>
-        <select class="form-control" id="exampleSelect1" asp-for="Employee.TitleId" asp-items="@(new SelectList(Model.Titles,"Id","Name"))">
+        <select class="form-control" id="exampleSelect1" asp-for="Employee.TitleId" asp-items="@(new SelectList(Model.Titles, "Id", "Name"))">
             <option value="0">Select title</option>
         </select>
         <span asp-validation-for="Employee.TitleId" class="text-danger"></span>
     </div>
+    @{
+        if (Model.Employee.Id != 0)
+        {
+            <div class="form-group col-3">
+                <h5>Projects:</h5>
+                @{
+                    foreach (var employeProject in Model.Employee.ProjectsEmployees)
+                    {
+                        <span class="badge badge-primary">@employeProject.Project.Name</span>
+                    }
+                }
+            </div>
+        }
+    }
     <div class="form-group col-3">
         <button class="btn btn-success">Submit</button>
     </div>

@@ -12,6 +12,7 @@ namespace Relaty.Profiles
     {
         public EmployeesProfile()
         {
+            CreateMap<Employee, Employee>();
             CreateMap<Employee, EmployeeDto>();
             CreateMap<Employee, EmployeeWithProjectsDto>();
             CreateMap<ProjectEmployee, EmployeeProjectsDto>();

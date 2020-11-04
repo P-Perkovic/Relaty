@@ -33,7 +33,7 @@
             $.get("api/employees", function (data) {
                 for (var i = 0; i < data.length; i++) {
                     $("#employees tbody").append("<tr>" +
-                        "<td> " + data[i].name + "</td>" +
+                        "<td> <a class='btn btn-success' href='/Employees/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
                         "<td> " + data[i].email + "</td>" +
                         "<td> " + data[i].title.name + "</td>" +
                         "<td><a class=' btn btn-danger delete ' id=" + data[i].id + ">Delete</a></td>" +

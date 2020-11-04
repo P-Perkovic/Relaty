@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Relaty.Data;
+using Relaty.Dtos;
 using Relaty.Models;
 using Relaty.ViewModels;
 
@@ -31,30 +33,73 @@ namespace Relaty.Controllers
             var viewModel = new EmployeeTitlesModel
             {
                 Employee = new Employee(),
-                Titles = titles
+                Titles = titles,
+                ViewName = "New"
             };
 
-            return View(viewModel);
+            return View("EmployeeForm", viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employee)
+        public IActionResult Update(Employee employee)
         {
             if (ModelState.IsValid == false){
                 var titles = _context.Titles.ToList();
+                string viewName;
+                if (employee.Id == 0)
+                {
+                    viewName = "New";
+                }
+                else
+                {
+                    viewName = "Update";
+                }
+
                 var viewModel = new EmployeeTitlesModel
                 {
                     Employee = employee,
-                    Titles = titles
+                    Titles = titles,
+                    ViewName = viewName
                 };
 
-                return View("New", viewModel);
+                return View("EmployeeForm", viewModel);
             }
 
-            _context.Add(employee);
+            if(employee.Id == 0)
+            {
+                _context.Add(employee);
+            }
+            else
+            {
+                var emplyeeDb = _context.Employees.SingleOrDefault(e => e.Id == employee.Id);
+                _mapper.Map(employee, emplyeeDb);
+            }
+
             _context.SaveChanges();
             return RedirectToAction("Index");
+
+        }
+
+        public IActionResult Details(int id)
+        {
+            var employee = _context.Employees
+                .Include(e => e.Title).
+                SingleOrDefault(e => e.Id == id);
+            employee.ProjectsEmployees = _context.ProjectsEmployees
+                .Include(pe => pe.Project)
+                .Where(pe => pe.EmployeeId == id)
+                .ToList();
+            var titles = _context.Titles.ToList();
+
+            var viewModel = new EmployeeTitlesModel
+            {
+                Employee = employee,
+                Titles = titles,
+                ViewName = "Update"
+            };
+
+            return View("EmployeeForm", viewModel);
         }
     }
 }

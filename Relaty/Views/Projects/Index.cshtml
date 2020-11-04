@@ -32,7 +32,7 @@
             $.get("api/projects", function (data) {
                 for (var i = 0; i < data.length; i++) {
                     $("#projects tbody").append("<tr>" +
-                        "<td> " + data[i].name + "</td>" +
+                        "<td> <a class='btn btn-success' href='/Projects/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
                         "<td> " + data[i].dateOfStart.split("T")[0] + "</td>" +
                         "<td> " + data[i].status.name + "</td>" +
                         "<td><a class=' btn btn-danger delete' id=" + data[i].id + ">Delete</a></td>" +

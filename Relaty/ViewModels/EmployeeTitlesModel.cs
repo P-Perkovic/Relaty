@@ -10,5 +10,6 @@ namespace Relaty.ViewModels
     {
         public Employee Employee { get; set; }
         public IEnumerable<Title> Titles { get; set; }
+        public string ViewName;
     }
 }

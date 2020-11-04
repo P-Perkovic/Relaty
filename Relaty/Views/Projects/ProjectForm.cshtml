@@ -1,0 +1,58 @@
+﻿@model Relaty.ViewModels.ProjectStatusesModel
+@{
+    ViewData["Title"] = "ProjectForm";
+}
+
+<br />
+
+<h2>@Model.ViewName Project</h2>
+
+<br />
+
+<form method="post" asp-action="Update">
+    <div hidden class="form-group col-3">
+        <label asp-for="Project.Id"></label>
+        <input type="text" class="form-control" asp-for="Project.Id" />
+    </div>
+    <div class="form-group col-3">
+        <label asp-for="Project.Name"></label>
+        <input type="text" class="form-control" asp-for="Project.Name" />
+        <span asp-validation-for="Project.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group col-3">
+        <label asp-for="Project.DateOfStart"></label>
+        <input type="date" class="form-control" placeholder="exsample@email.com" asp-for="Project.DateOfStart" />
+        <span asp-validation-for="Project.DateOfStart" class="text-danger"></span>
+    </div>
+    <div class="form-group col-3">
+        <label asp-for="Project.StatusId"></label>
+        <select class="form-control" id="exampleSelect1" asp-for="Project.StatusId" asp-items="@(new SelectList(Model.Statuses, "Id", "Name"))">
+            <option value="0">Select status</option>
+        </select>
+        <span asp-validation-for="Project.StatusId" class="text-danger"></span>
+    </div>
+    @{
+        if (Model.Project.Id != 0)
+        {
+            <div class="form-group col-3">
+                <h5>Projects:</h5>
+                @{
+                    foreach (var projectEmployee in Model.Project.ProjectsEmployees)
+                    {
+                        <span class="badge badge-primary">@projectEmployee.Employee.Name</span>
+                    }
+                }
+            </div>
+        }
+    }
+    <div class="form-group col-3">
+        <button class="btn btn-success">Submit</button>
+    </div>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<partial name="_ValidationScriptsPartial" />
+
+
+
+

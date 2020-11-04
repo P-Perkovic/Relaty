@@ -40,7 +40,7 @@ namespace Relaty.Controllers.API
             return Ok(_mapper.Map<IEnumerable<EmployeeDto>>(employees));
         }
 
-        // GET api/projects/{id}
+        // GET api/employees/{id}
         [HttpGet("{id}")]
         public IActionResult GetEmployeeById(int id)
         {
