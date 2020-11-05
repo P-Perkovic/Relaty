@@ -12,7 +12,7 @@ namespace Relaty.Profiles
             CreateMap<Project, Project>();
             CreateMap<Project, ProjectDto>();
             CreateMap<Project, ProjectWithEmployeesDto>();
-            CreateMap<ProjectEmployee, ProjectEmployeesDto>();
+            CreateMap<ProjectEmployee, ProjectEmployeeDto>();
 
             CreateMap<ProjectDto, Project>();
         }

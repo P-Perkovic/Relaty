@@ -57,20 +57,21 @@
 
 
 @section scripts{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <script>
         $(document).ready(function () {
-            var clicked = false;
-            var projectIds = [];
+            let clicked = false;
+            let viewModel = {
+                projectIds: []
+            };
             $("#employee").on("click", ".btn-edit", function () {
                 button = $(this);
                 clicked = true;
-                var choosen = $(".choosen");
+                let choosen = $(".choosen");
                 button.parent().html("<a class='btn btn-success save'>Save</a>");
                 $.get("../../api/projects/", function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var isChoosen = false;
-                        for (var j = 0; j < choosen.length; j++) {
+                    for (let i = 0; i < data.length; i++) {
+                        let isChoosen = false;
+                        for (let j = 0; j < choosen.length; j++) {
                             if (data[i].name == choosen[j].textContent) {
                                 isChoosen = true;
                             }
@@ -86,16 +87,16 @@
             });
 
             $("#all-projects").on("click", ".btn-project", function () {
-                var button = $(this);
+                let button = $(this);
                 button.addClass("disabled");
                 $("#projects").append("<span class='btn btn-primary choosen' id=" + button.attr("id") + ">" + button.text() + "</span>")
             });
 
             $("#projects").on("click", ".choosen", function () {
                 if (clicked == true) {
-                    var button = $(this);
+                    let button = $(this);
                     disabledBtns = $(".disabled");
-                    for (var i = 0; i < disabledBtns.length; i++) {
+                    for (let i = 0; i < disabledBtns.length; i++) {
                         if (disabledBtns[i].textContent == button.text()) {
                             disabledBtns[i].classList.remove("disabled");
                         }
@@ -106,24 +107,27 @@
 
             $("#employee").on("click", ".save", function () {
                 button = $(this);
-                var choosen = $(".choosen");
-                for (var i = 0; i < choosen.length; i++) {
-                    projectIds.push(choosen[i].id);
+                let choosen = $(".choosen");
+                for (let i = 0; i < choosen.length; i++) {
+                    viewModel.projectIds.push(choosen[i].id);
                 }
+                viewModel.employeeId = $("#Employee_Id").val();
                 $.ajax({
-                    url: "/api/newRentals",
-                    method: "post",
-                    data: projectIds
+                    url: "../../api/employeeprojects/",
+                    method: "put",
+                    data: viewModel
                 })
                     .done(function () {
                         button.parent().html("<button class='btn btn-success'>Submit</button>" +
                             "<a class='btn btn-warning btn-edit'>Edit Projects List</a>");
                         $("#all-projects").children().remove();
                         clicked = false;
+                        window.location.reload();
                     })
                     .fail(function () {
                         alert("Something unexpected happend.");
                     });
+                viewModel = { projectIds: [] };
             });
         });
     </script>

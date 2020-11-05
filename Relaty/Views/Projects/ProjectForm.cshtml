@@ -31,28 +31,104 @@
         </select>
         <span asp-validation-for="Project.StatusId" class="text-danger"></span>
     </div>
-    @{
-        if (Model.Project.Id != 0)
-        {
-            <div class="form-group col-3">
-                <h5>Projects:</h5>
-                @{
-                    foreach (var projectEmployee in Model.Project.ProjectsEmployees)
-                    {
-                        <span class="badge badge-primary">@projectEmployee.Employee.Name</span>
-                    }
-                }
-            </div>
-        }
+    @if (Model.Project.Id != 0)
+    {
+        <div class="form-group col-4" id="employees">
+            <h5>Employees:</h5>
+            @foreach (var projectEmployee in Model.Project.ProjectsEmployees)
+            {
+                <span class="btn btn-primary choosen" id="@projectEmployee.EmployeeId">@projectEmployee.Employee.Name</span>
+            }
+        </div>
     }
-    <div class="form-group col-3">
+    <div class="form-group col-4" id="all-employees">
+    </div>
+    <div class="form-group col-3" id="project">
         <button class="btn btn-success">Submit</button>
+        @if (Model.Project.Id != 0)
+        {
+            <a class="btn btn-warning btn-edit">Edit Employees List</a>
+        }
     </div>
 </form>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <partial name="_ValidationScriptsPartial" />
 
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            let clicked = false;
+            let viewModel = {
+                employeeIds: []
+            };
+            $("#project").on("click", ".btn-edit", function () {
+                button = $(this);
+                clicked = true;
+                let choosen = $(".choosen");
+                button.parent().html("<a class='btn btn-success save'>Save</a>");
+                $.get("../../api/employees/", function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        let isChoosen = false;
+                        for (let j = 0; j < choosen.length; j++) {
+                            if (data[i].name == choosen[j].textContent) {
+                                isChoosen = true;
+                            }
+                        }
+                        if (isChoosen == false) {
+                            $("#all-employees").append("<a class='btn btn-primary btn-employee' id=" + data[i].id + ">" + data[i].name + "</a>");
+                        }
+                        else {
+                            $("#all-employees").append("<a class='btn btn-primary btn-employee disabled' id=" + data[i].id + ">" + data[i].name + "</a>");
+                        }
+                    }
+                });
+            });
 
+            $("#all-employees").on("click", ".btn-employee", function () {
+                let button = $(this);
+                button.addClass("disabled");
+                $("#employees").append("<span class='btn btn-primary choosen' id=" + button.attr("id") + ">" + button.text() + "</span>")
+            });
 
+            $("#employees").on("click", ".choosen", function () {
+                if (clicked == true) {
+                    let button = $(this);
+                    disabledBtns = $(".disabled");
+                    for (let i = 0; i < disabledBtns.length; i++) {
+                        if (disabledBtns[i].textContent == button.text()) {
+                            disabledBtns[i].classList.remove("disabled");
+                        }
+                    }
+                    button.remove();
+                }
+            });
+
+            $("#project").on("click", ".save", function () {
+                button = $(this);
+                let choosen = $(".choosen");
+                for (let i = 0; i < choosen.length; i++) {
+                    viewModel.employeeIds.push(choosen[i].id);
+                }
+                viewModel.projectId = $("#Project_Id").val();
+                $.ajax({
+                    url: "../../api/projectemployees/",
+                    method: "put",
+                    data: viewModel
+                })
+                    .done(function () {
+                        button.parent().html("<button class='btn btn-success'>Submit</button>" +
+                            "<a class='btn btn-warning btn-edit'>Edit Employees List</a>");
+                        $("#all-employees").children().remove();
+                        clicked = false;
+                        window.location.reload();
+                    })
+                    .fail(function () {
+                        alert("Something unexpected happend.");
+                    });
+                viewModel = { employeeIds: [] };
+            });
+        });
+    </script>
+}
 

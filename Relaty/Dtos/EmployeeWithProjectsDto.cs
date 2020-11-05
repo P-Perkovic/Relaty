@@ -12,6 +12,6 @@ namespace Relaty.Dtos
 
         public Title Title { get; set; }
 
-        public IEnumerable<EmployeeProjectsDto> EmployeeProjects { get; set; }
+        public IEnumerable<EmployeeProjectDto> EmployeeProjects { get; set; }
     }
 }

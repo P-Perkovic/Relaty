@@ -30,7 +30,7 @@
     <script>
         $(document).ready(function () {
             $.get("api/projects", function (data) {
-                for (var i = 0; i < data.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     $("#projects tbody").append("<tr>" +
                         "<td> <a class='btn btn-success' href='/Projects/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
                         "<td> " + data[i].dateOfStart.split("T")[0] + "</td>" +
@@ -41,7 +41,7 @@
             });
 
             $("#projects").on("click", ".delete", function () {
-                var button = $(this);
+                let button = $(this);
                 bootbox.confirm("Are you shure you want delete this project?", function (result) {
                     if (result) {
                         $.ajax({

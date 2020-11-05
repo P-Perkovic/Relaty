@@ -31,7 +31,7 @@
     <script>
         $(document).ready(function () {
             $.get("api/employees", function (data) {
-                for (var i = 0; i < data.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     $("#employees tbody").append("<tr>" +
                         "<td> <a class='btn btn-success' href='/Employees/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
                         "<td> " + data[i].email + "</td>" +
@@ -42,7 +42,7 @@
             });
 
             $("#employees").on("click", ".delete", function () {
-                var button = $(this);
+                let button = $(this);
                 bootbox.confirm("Are you shure you want delete this employee?", function (result) {
                     if (result) {
                         $.ajax({

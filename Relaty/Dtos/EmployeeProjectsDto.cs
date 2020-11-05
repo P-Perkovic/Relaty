@@ -1,7 +1,10 @@
-﻿namespace Relaty.Dtos
+﻿using System.Collections.Generic;
+
+namespace Relaty.Dtos
 {
     public class EmployeeProjectsDto
     {
-        public ProjectDto Project { get; set; }
+        public int EmployeeId { get; set; }
+        public List<int> ProjectIds { get; set; }
     }
 }

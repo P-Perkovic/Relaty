@@ -12,7 +12,7 @@ namespace Relaty.Dtos
 
         public Status Status { get; set; }
 
-        public IEnumerable<ProjectEmployeesDto> ProjectsEmployees { get; set; }
+        public IEnumerable<ProjectEmployeeDto> ProjectsEmployees { get; set; }
     }
 }
 

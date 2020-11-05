@@ -56,7 +56,7 @@ namespace Relaty.Controllers.API
                 .Include(pe => pe.Employee.Title)
                 .Where(pe => pe.ProjectId == id)
                 .ToList();
-            projectDto.ProjectsEmployees = _mapper.Map<IEnumerable<ProjectEmployeesDto>>(projectEmployees);
+            projectDto.ProjectsEmployees = _mapper.Map<IEnumerable<ProjectEmployeeDto>>(projectEmployees);
 
             return Ok(projectDto);
         }
