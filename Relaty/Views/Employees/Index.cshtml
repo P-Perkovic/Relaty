@@ -28,34 +28,44 @@
 @section scripts {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/realTime.js"></script>
     <script>
         $(document).ready(function () {
             $.get("api/employees", function (data) {
                 for (let i = 0; i < data.length; i++) {
                     $("#employees tbody").append("<tr>" +
                         "<td> <a class='btn btn-success' href='/Employees/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
-                        "<td> " + data[i].email + "</td>" +
+                        "<td> " + Email(data[i].email) + "</td>" +
                         "<td> " + data[i].title.name + "</td>" +
                         "<td><a class=' btn btn-danger delete ' id=" + data[i].id + ">Delete</a></td>" +
                         "</tr> ");
                 }
             });
 
-            $("#employees").on("click", ".delete", function () {
-                let button = $(this);
-                bootbox.confirm("Are you shure you want delete this employee?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            url: "/api/employees/" + button.attr("id"),
-                            method: "DELETE",
-                            success: function () {
-                                button.parents("tr").remove();
-                            }
-                        });
-                    }
-                });
-            });
+            function Email(email) {
+                if (email == null) {
+                    return "Unknown!"
+                }
+                else {
+                    return email
+                }
+            }
 
+                $("#employees").on("click", ".delete", function () {
+                    let button = $(this);
+                    bootbox.confirm("Are you shure you want delete this employee?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/employees/" + button.attr("id"),
+                                method: "DELETE"//,
+                                //success: function () {
+                                //    button.parents("tr").remove();
+                                // }
+                            });
+                        }
+                    });
+                });
         });
     </script>
 }

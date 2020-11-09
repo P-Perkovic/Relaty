@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Relaty.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using Relaty.Hubs;
 
 namespace Relaty
 {
@@ -39,6 +35,10 @@ namespace Relaty
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddCors();
+            services.AddSignalR();
+            services.AddSingleton<IAppHub, AppHub>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +60,13 @@ namespace Relaty
 
             app.UseRouting();
 
+            app.UseCors(builder => builder
+                .WithOrigins("https://localhost:44324/")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                );
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -69,6 +76,7 @@ namespace Relaty
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<AppHub>("/appHub");
             });
         }
     }

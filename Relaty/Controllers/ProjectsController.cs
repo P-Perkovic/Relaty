@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Relaty.Data;
+using Relaty.Hubs;
 using Relaty.Models;
 using Relaty.ViewModels;
 
@@ -12,11 +14,13 @@ namespace Relaty.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAppHub _appHub;
 
-        public ProjectsController(ApplicationDbContext context, IMapper mapper)
+        public ProjectsController(ApplicationDbContext context, IMapper mapper, IAppHub appHub)
         {
             _context = context;
             _mapper = mapper;
+            _appHub = appHub;
         }
         public IActionResult Index()
         {
@@ -38,7 +42,7 @@ namespace Relaty.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(Project project)
+        public async Task<IActionResult> UpdateAsync(Project project)
         {
 
             if(ModelState.IsValid == false)
@@ -74,6 +78,9 @@ namespace Relaty.Controllers
             }
 
             _context.SaveChanges();
+
+            await _appHub.Refresh();
+
             return RedirectToAction("Index");
         }
 

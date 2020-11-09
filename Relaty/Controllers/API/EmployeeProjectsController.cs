@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Relaty.Data;
 using Relaty.Dtos;
+using Relaty.Hubs;
 using Relaty.Models;
 
 namespace Relaty.Controllers.API
@@ -11,15 +13,17 @@ namespace Relaty.Controllers.API
     public class EmployeeProjectsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAppHub _appHub;
 
-        public EmployeeProjectsController(ApplicationDbContext context)
+        public EmployeeProjectsController(ApplicationDbContext context, IAppHub appHub)
         {
             _context = context;
+            _appHub = appHub;
         }
 
         // PUT api/employeeprojects
         [HttpPut]
-        public IActionResult Update([FromForm]EmployeeProjectsDto employeeProjects)
+        public async Task<IActionResult> UpdateAsync([FromForm]EmployeeProjectsDto employeeProjects)
         {
             var projectsDb = _context.ProjectsEmployees
                 .Where(ep => ep.EmployeeId == employeeProjects.EmployeeId)
@@ -44,8 +48,10 @@ namespace Relaty.Controllers.API
             {
                 employeProject.ProjectId = projectId;
                 _context.ProjectsEmployees.Add(employeProject);
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
+
+            await _appHub.Refresh();
 
             return Ok();
         }

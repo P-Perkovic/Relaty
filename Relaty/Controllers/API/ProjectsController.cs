@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Relaty.Data;
 using Relaty.Dtos;
+using Relaty.Hubs;
 
 namespace Relaty.Controllers.API
 {
@@ -14,11 +16,13 @@ namespace Relaty.Controllers.API
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAppHub _appHub;
 
-        public ProjectsController(ApplicationDbContext context, IMapper mapper)
+        public ProjectsController(ApplicationDbContext context, IMapper mapper, IAppHub appHub)
         {
             _context = context;
             _mapper = mapper;
+            _appHub = appHub;
         }
 
         // GET api/projects/
@@ -63,7 +67,7 @@ namespace Relaty.Controllers.API
 
         // DELETE api/projects/{id}
         [HttpDelete("{id}")]
-        public IActionResult DeleteProject(int id)
+        public async Task<IActionResult> DeleteProjectAsync(int id)
         {
             var project = _context.Projects
                 .SingleOrDefault(p => p.Id == id);
@@ -80,6 +84,8 @@ namespace Relaty.Controllers.API
             _context.Projects.Remove(project);
             _context.ProjectsEmployees.RemoveRange(projectEmployees);
             _context.SaveChanges();
+
+            await _appHub.Refresh();
 
             return NoContent();
         }
