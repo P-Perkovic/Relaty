@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.SignalR.Hubs;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Relaty.Hubs
 {
