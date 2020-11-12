@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "EmployeesList";
+}
+
+<br />
+
+<h2>Employees</h2>
+
+<br />
+
+<table class="table table-hover" style="width:60%" id="employees">
+    <thead>
+        <tr>
+            <th style="width:20%">Name</th>
+            <th style="width:20%">Email</th>
+            <th style="width:20%">Title</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/realTime.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get("api/employees", function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    $("#employees tbody").append("<tr>" +
+                        "<td> <a class='btn btn-success' href='/Employees/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
+                        "<td> " + Email(data[i].email) + "</td>" +
+                        "<td> " + data[i].title.name + "</td>" +
+                        "</tr> ");
+                }
+            });
+
+            function Email(email) {
+                if (email == null) {
+                    return "Unknown!"
+                }
+                else {
+                    return email
+                }
+            }
+        });
+    </script>
+}
+

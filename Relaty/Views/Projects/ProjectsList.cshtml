@@ -1,23 +1,20 @@
 ﻿
 @{
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = "ProjectsList";
 }
 <br />
 
 <h2>Projects</h2>
 
-<a class=" btn btn-info" asp-controller="Projects" asp-action="New">New Project</a>
-
 <br />
 <br />
 
-<table class="table table-hover" style="width:70%" id="projects">
+<table class="table table-hover" style="width:60%" id="projects">
     <thead>
         <tr>
             <th style="width:20%">Name</th>
             <th style="width:20%">Date Of Start</th>
             <th style="width:20%">Status</th>
-            <th style="width:10%"></th>
         </tr>
     </thead>
     <tbody>
@@ -37,7 +34,6 @@
                         "<td> <a class='btn btn-success' href='/Projects/Details/" + data[i].id + "'>" + data[i].name + "</a></td>" +
                         "<td> " + Date(data[i].dateOfStart)  + "</td>" +
                         "<td> " + data[i].status.name + "</td>" +
-                        "<td><a class=' btn btn-danger delete' id=" + data[i].id + ">Delete</a></td>" +
                         "</tr> ");
                 }
             });
@@ -53,22 +49,8 @@
                     return dateLocal;
                 }
             }
-
-            $("#projects").on("click", ".delete", function () {
-                let button = $(this);
-                bootbox.confirm("Are you shure you want delete this project?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            url: "/api/projects/" + button.attr("id"),
-                            method: "DELETE"//,
-                            //success: function () {
-                            //    button.parents("tr").remove();
-                            //    }
-                        });
-                    }
-                });
-            });
         });
     </script>
 
 }
+

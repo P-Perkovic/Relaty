@@ -11,7 +11,7 @@ using Relaty.ViewModels;
 
 namespace Relaty.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,9 +24,15 @@ namespace Relaty.Controllers
             _mapper = mapper;
             _appHub = appHub;
         }
+
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin") == true)
+            {
+                return View();
+            }
+
+            return View("EmployeesList");
         }
 
         public IActionResult New()
@@ -104,7 +110,12 @@ namespace Relaty.Controllers
                 ViewName = "Update"
             };
 
-            return View("EmployeeForm", viewModel);
+            if(User.IsInRole("Admin") == true)
+            {
+                return View("EmployeeForm", viewModel);
+            }
+
+            return View("EmployeeDetails", viewModel);
         }
     }
 }

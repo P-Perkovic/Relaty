@@ -11,7 +11,7 @@ using Relaty.ViewModels;
 
 namespace Relaty.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +26,12 @@ namespace Relaty.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin"))
+            {
+                return View();
+            }
+
+            return View("ProjectsList");
         }
 
         public IActionResult New()
@@ -104,7 +109,12 @@ namespace Relaty.Controllers
                 ViewName = "Update"
             };
 
-            return View("ProjectForm", viewModel);
+            if (User.IsInRole("Admin"))
+            {
+                return View("ProjectForm", viewModel);
+            }
+
+            return View("ProjectDetails", viewModel);
         }
     }
 }
